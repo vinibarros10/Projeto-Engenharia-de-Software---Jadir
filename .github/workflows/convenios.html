@@ -1,0 +1,8 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Smile Up - Convênios</title><link rel="stylesheet" href="css/style.css"></head><body onload="verificarLogin(); carregarConvenios();">
+  <div class="app"><aside class="sidebar"><div class="brand"><img src="logo/logo.png" alt="logo"></div><nav class="menu"><a href="dashboard.html">Dashboard</a><a href="pacientes.html">Pacientes</a><a href="dentistas.html">Dentistas</a><a href="consultas.html">Consultas</a><a href="tratamento.html">Tratamentos</a><a href="pagamentos.html">Financeiro</a><a href="convenios.html" class="active">Convênios</a><a href="materiais.html">Materiais</a><a href="relatorios.html">Relatórios</a><a href="#" onclick="logout()" class="danger">Sair</a></nav></aside>
+    <main class="content"><header class="topbar"><div>Convênios</div></header><section class="container">
+      <div class="card"><h3>Cadastro de Convênio</h3>
+        <form id="formConvenio" class="form-grid"><input id="nomeConv" placeholder="Nome do convênio" required><input id="codigoConv" placeholder="Código / Operadora"><button class="btn" type="submit">Salvar</button></form>
+      </div>
+      <div class="card"><h3>Lista de Convênios</h3><table class="tabela"><thead><tr><th>Nome</th><th>Código</th><th>Ações</th></tr></thead><tbody id="listaConvenios"></tbody></table></div>
+    </section></main></div><script src="js/auth.js"></script><script src="js/convenios.js"></script></body></html>

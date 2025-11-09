@@ -1,0 +1,28 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Smile Up - Pagamentos</title><link rel="stylesheet" href="css/style.css"></head><body onload="verificarLogin(); listarPagamentos(); carregarPacientesOptionsForPagamento();">
+  <div class="app"><aside class="sidebar"><div class="brand"><img src="logo/logo.png" alt="logo"></div><nav class="menu"><a href="dashboard.html">Dashboard</a><a href="pacientes.html">Pacientes</a><a href="dentistas.html">Dentistas</a><a href="consultas.html">Consultas</a><a href="tratamento.html">Tratamentos</a><a href="pagamentos.html" class="active">Financeiro</a><a href="convenios.html">Convênios</a><a href="materiais.html">Materiais</a><a href="relatorios.html">Relatórios</a><a href="#" onclick="logout()" class="danger">Sair</a></nav></aside>
+    <main class="content"><header class="topbar"><div>Financeiro</div></header><section class="container">
+      <div class="card"><h3>Registrar Pagamento</h3>
+        <form id="formPagamento" class="form-grid">
+          <select id="pacientePag"></select>
+          <input id="valor" type="number" step="0.01" placeholder="Valor (R$)">
+          <select id="forma"><option>Dinheiro</option><option>Cartão</option><option>Pix</option></select>
+          <button class="btn" type="submit">Registrar</button>
+        </form>
+      </div>
+
+      <div class="card">
+  <h3>Relatório Financeiro</h3>
+  <div class="form-grid">
+    <select id="filtroAno" onchange="gerarGraficoFinanceiro()">
+      <option value="">Todos os anos</option>
+    </select>
+  </div>
+  <canvas id="graficoFinanceiro" height="120"></canvas>
+</div>
+
+      <div class="card"><h3>Histórico de Pagamentos</h3><table class="tabela"><thead><tr><th>Paciente</th><th>Valor</th><th>Forma</th><th>Data</th></tr></thead><tbody id="listaPagamentos">
+        
+      </tbody></table></div>
+    </section></main></div><script src="js/auth.js"></script>
+    <script src="js/chart.min.js"></script>
+<script src="js/pagamentos.js"></script></body></html>

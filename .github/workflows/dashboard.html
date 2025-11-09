@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Smile Up - Dashboard</title><link rel="stylesheet" href="css/style.css"></head><body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><img src="logo/logo.png" alt="logo"></div>
+      <nav class="menu">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="pacientes.html">Pacientes</a>
+        <a href="dentistas.html">Dentistas</a>
+        <a href="consultas.html">Consultas</a>
+        <a href="tratamento.html">Tratamentos</a>
+        <a href="pagamentos.html">Financeiro</a>
+        <a href="convenios.html">Convênios</a>
+        <a href="materiais.html">Materiais</a>
+        <a href="relatorios.html">Relatórios</a>
+                <a href="#" onclick="logout()" class="danger">Sair</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <header class="topbar"><div>Olá, <span id="usuarioTopo">Usuário</span></div></header>
+      <section class="container">
+        <h2>Dashboard</h2>
+        <div class="grid-3">
+          <div class="card stat"><div class="num" id="totalPacientes">0</div><div class="label">Pacientes</div></div>
+          <div class="card stat"><div class="num" id="totalConsultas">0</div><div class="label">Consultas</div></div>
+          <div class="card stat"><div class="num" id="totalReceita">R$ 0,00</div><div class="label">Receita</div></div>
+        </div>
+        <div class="card"><h3>Próximas consultas</h3><table class="tabela" id="proxConsultas"><thead><tr><th>Paciente</th><th>Dentista</th><th>Data / Hora</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <script src="js/auth.js"></script><script src="js/main.js"></script></body></html>
