@@ -1,58 +1,98 @@
+// ==============================
+// Dentistas - Smile Up
+// ==============================
 
-// dentistas.js - CRUD dentistas
-let dentistas = JSON.parse(localStorage.getItem('dentistas') || '[]');
-const formD = document.getElementById('formDentista');
-const listaD = document.getElementById('listaDentistas');
+let editDentistaIndex = null;
 
-function carregarDentistas(){
-  if(!verificarLogin()) return;
-  dentistas = JSON.parse(localStorage.getItem('dentistas') || '[]');
-  if(!listaD) return;
-  listaD.innerHTML = '';
-  dentistas.forEach((d,i)=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${d.nome}</td><td>${d.cro||''}</td><td>${d.especialidade||''}</td><td>${d.ativo==1?'Ativo':'Inativo'}</td>
-      <td><button onclick="editarDentista(${i})">✏️</button> <button onclick="removerDentista(${i})">🗑️</button></td>`;
-    listaD.appendChild(tr);
-  });
-}
+// Salvar ou atualizar dentista
+function salvarDentista(event) {
+  event.preventDefault();
 
-if(formD){
-  formD.addEventListener('submit', e=>{
-    e.preventDefault();
-    const nome = document.getElementById('nomeDent').value.trim();
-    const cro = document.getElementById('cro').value.trim();
-    const esp = document.getElementById('especialidade').value.trim();
-    const ativo = document.getElementById('ativo').value;
-    if(!nome) return alert('Nome é obrigatório');
-    dentistas.push({id:Date.now(), nome, cro, especialidade:esp, ativo});
-    localStorage.setItem('dentistas', JSON.stringify(dentistas));
-    formD.reset();
-    carregarDentistas();
-    alert('Dentista salvo.');
-  });
-}
+  const nome = document.getElementById("nome").value.trim();
+  const cro = document.getElementById("cro").value.trim();
+  const especialidade = document.getElementById("especialidade").value.trim();
+  const status = document.getElementById("status").value;
 
-function removerDentista(i){
-  if(!confirm('Remover dentista?')) return;
-  dentistas.splice(i,1);
-  localStorage.setItem('dentistas', JSON.stringify(dentistas));
+  if (!nome || !cro || !especialidade) {
+    alert("Preencha todos os campos obrigatórios!");
+    return;
+  }
+
+  let dentistas = JSON.parse(localStorage.getItem("dentistas") || "[]");
+
+  if (editDentistaIndex !== null) {
+    // Atualizar
+    dentistas[editDentistaIndex] = { nome, cro, especialidade, status };
+    editDentistaIndex = null;
+  } else {
+    // Verificar duplicidade de CRO
+    if (dentistas.some(d => d.cro === cro)) {
+      alert("Já existe um dentista com este CRO!");
+      return;
+    }
+
+    // Adicionar novo
+    dentistas.push({ nome, cro, especialidade, status });
+  }
+
+  localStorage.setItem("dentistas", JSON.stringify(dentistas));
+  document.getElementById("formDentista").reset();
   carregarDentistas();
 }
 
-function editarDentista(i){
-  const d = dentistas[i];
-  const nome = prompt('Nome', d.nome);
-  if(nome){ d.nome = nome; localStorage.setItem('dentistas', JSON.stringify(dentistas)); carregarDentistas(); }
+// Carregar dentistas
+function carregarDentistas() {
+  const dentistas = JSON.parse(localStorage.getItem("dentistas") || "[]");
+  const lista = document.getElementById("listaDentistas");
+  lista.innerHTML = "";
+
+  if (dentistas.length === 0) {
+    lista.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Nenhum dentista cadastrado</td></tr>`;
+    return;
+  }
+
+  dentistas.forEach((d, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${d.nome}</td>
+      <td>${d.cro}</td>
+      <td>${d.especialidade}</td>
+      <td>${d.status}</td>
+      <td style="text-align:center;">
+        <button class="btn btn-warning btn-sm" onclick="editarDentista(${i})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="removerDentista(${i})">🗑️</button>
+      </td>
+    `;
+    lista.appendChild(tr);
+  });
 }
 
-function carregarDentistasOptions(){
-  const sel = document.getElementById('dentistaSelect');
-  if(!sel) return;
-  sel.innerHTML = '<option value="">-- selecionar dentista --</option>';
-  const list = JSON.parse(localStorage.getItem('dentistas') || '[]');
-  list.forEach(d => { const o = document.createElement('option'); o.value = d.nome; o.textContent = d.nome; sel.appendChild(o); });
+// Editar dentista
+function editarDentista(index) {
+  const dentistas = JSON.parse(localStorage.getItem("dentistas") || "[]");
+  const d = dentistas[index];
+
+  document.getElementById("nome").value = d.nome;
+  document.getElementById("cro").value = d.cro;
+  document.getElementById("especialidade").value = d.especialidade;
+  document.getElementById("status").value = d.status;
+
+  editDentistaIndex = index;
 }
 
-window.carregarDentistas = carregarDentistas;
-window.carregarDentistasOptions = carregarDentistasOptions;
+// Remover dentista
+function removerDentista(index) {
+  if (!confirm("Deseja realmente excluir este dentista?")) return;
+  const dentistas = JSON.parse(localStorage.getItem("dentistas") || "[]");
+  dentistas.splice(index, 1);
+  localStorage.setItem("dentistas", JSON.stringify(dentistas));
+  carregarDentistas();
+}
+
+// Inicialização
+window.addEventListener("load", () => {
+  verificarLogin();
+  carregarDentistas();
+});
+
+document.getElementById("formDentista").addEventListener("submit", salvarDentista);
