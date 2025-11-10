@@ -1,0 +1,32 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.nav-link {
+  color: #555;
+  font-weight: 500;
+}
+
+.nav-link.active, .nav-link:hover {
+  color: #0d6efd;
+  background-color: #f0f6ff;
+  border-radius: 6px;
+}
+
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+nav img {
+  position: relative; 
+  z-index: 1000;
+}
+
+/* Adicione isso ao seu arquivo css/style.css */
+.sidebar-custom {
+  width: 280px;
+}
