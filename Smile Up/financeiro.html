@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smile Up - Financeiro</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/imask"></script>
+  <script defer src="js/demo-data.js"></script>
+  <script defer src="js/script.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<body>
+  <div class="d-flex">
+<nav class="bg-white border-end vh-100 p-3 shadow-sm sidebar-custom">
+   <p><img src="logo/smile.png" alt="Logo Smile Up" width="150"></p>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="dashboard.html" class="nav-link">🏠 Dashboard</a></li>
+        <li class="nav-item mb-2"><a href="pacientes.html" class="nav-link">🧑‍⚕️ Pacientes</a></li>
+        <li class="nav-item mb-2"><a href="agendamentos.html" class="nav-link">📅 Agendamentos</a></li>
+        <li class="nav-item mb-2"><a href="orcamentos.html" class="nav-link">📝 Orçamentos</a></li>
+        <li class="nav-item mb-2"><a href="financeiro.html" class="nav-link active">💰 Financeiro</a></li>
+        <li class="nav-item mb-2"><a href="estoque.html" class="nav-link">📦 Estoque</a></li>
+        <li class="nav-item mb-2"><a href="convenios.html" class="nav-link">🤝 Convênios</a></li>
+        <li class="nav-item mt-4"><a href="#" id="logoutBtn" class="btn btn-outline-danger w-100">Sair</a></li>
+      </ul>
+    </nav>
+
+    <div class="flex-grow-1 p-4 bg-light">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-secondary">Controle Financeiro</h3>
+        <span id="userDisplay" class="text-muted"></span>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title text-success">Total de Entradas</h5>
+              <h3 class="fw-bold" id="totalEntradas">R$ 0,00</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title text-danger">Total de Saídas</h5>
+              <h3 class="fw-bold" id="totalSaidas">R$ 0,00</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title text-primary">Saldo Atual</h5>
+              <h3 class="fw-bold" id="saldoAtual">R$ 0,00</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h5 class="mb-3 text-secondary">Novo Lançamento</h5>
+          <form id="financeiroForm" class="row g-3">
+
+           <div class="col-md-4">
+          <label class="form-label">Paciente</label>
+          <select id="pacienteSelect" class="form-select">
+            <option value="" selected>(Lançamento Administrativo)</option>
+            </select>
+        </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Descrição</label>
+              <input type="text" id="descricao" class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Forma de Pagamento</label>
+                <select id="formaPagamento" class="form-select" required>
+                  <option value="Dinheiro">Dinheiro</option>
+                  <option value="Cartão Débito/Crédito">Cartão Débito/Crédito</option>
+                  <option value="PIX">PIX</option>
+                  <option value="Outro">Boleto à vista</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Tipo</label>
+              <select id="tipo" class="form-select" required>
+                <option value="entrada">Entrada</option>
+                <option value="saida">Saída</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Valor (R$)</label>
+             <input type="text" id="valor" class="form-control" required>
+
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Data</label>
+              <input type="date" id="data" class="form-control" required>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Adicionar Lançamento</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="mb-3 text-secondary">Histórico de Transações</h5>
+          <table class="table table-striped table-hover align-middle" id="tabelaFinanceiro">
+            <thead class="table-primary">
+              <tr>
+                <th>Paciente</th>
+                <th>Descrição</th>
+                <th>Forma Pag.</th>
+                <th>Tipo</th>
+                <th>Valor (R$)</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editFinanceiroModal" tabindex="-1" aria-labelledby="editFinanceiroModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editFinanceiroModalLabel">Editar Lançamento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form id="editFinanceiroForm">
+        <div class="modal-body">
+          <input type="hidden" id="editFinanceiroIndex">
+          
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Paciente</label>
+              <select id="editPacienteSelectFin" class="form-select">
+                <option value="">N/A (Lançamento Administrativo)</option>
+                </select>
+            </div>
+            
+            <div class="col-md-4">
+              <label class="form-label">Descrição</label>
+              <input type="text" id="editDescricaoFin" class="form-control" required>
+            </div>
+            
+            <div class="col-md-4">
+                <label class="form-label">Forma de Pagamento</label>
+                <select id="editFormaPagamentoFin" class="form-select" required>
+                  <option value="Dinheiro">Dinheiro</option>
+                  <option value="Cartão Débito/Crédito">Cartão Débito/Crédito</option>
+                  <option value="PIX">PIX</option>
+                  <option value="Outro">Boleto à vista</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Tipo</label>
+              <select id="editTipoFin" class="form-select" required>
+                <option value="entrada">Entrada</option>
+                <option value="saida">Saída</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Valor (R$)</label>
+             <input type="text" id="editValorFin" class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Data</label>
+              <input type="date" id="editDataFin" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
