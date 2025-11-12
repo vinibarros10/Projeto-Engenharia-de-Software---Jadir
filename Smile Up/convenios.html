@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smile Up - Convênios</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/imask"></script>
+    <script src="js/demo-data.js"></script>
+    <script defer src="js/script.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="d-flex">
+    <nav class="bg-white border-end vh-100 p-3 shadow-sm sidebar-custom">
+      <p><img src="logo/smile.png" alt="Logo Smile Up" width="150"></p>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="dashboard.html" class="nav-link">🏠 Dashboard</a></li>
+        <li class="nav-item mb-2"><a href="pacientes.html" class="nav-link">🙋🏻‍♂️ Pacientes</a></li>
+        <li class="nav-item mb-2"><a href="dentistas.html" class="nav-link">👨‍⚕️ Dentistas</a></li>
+        <li class="nav-item mb-2"><a href="agendamentos.html" class="nav-link">📅 Agendamentos</a></li>
+        <li class="nav-item mb-2"><a href="orcamentos.html" class="nav-link">📝 Orçamentos</a></li>
+        <li class="nav-item mb-2"><a href="tratamentos.html" class="nav-link">🦷 Tratamentos</a></li>
+        <li class="nav-item mb-2"><a href="financeiro.html" class="nav-link">💰 Financeiro</a></li>
+        <li class="nav-item mb-2"><a href="estoque.html" class="nav-link">📦 Estoque</a></li>
+        <li class="nav-item mb-2"><a href="convenios.html" class="nav-link active">🤝 Convênios</a></li>
+        <li class="nav-item mt-4"><a href="#" id="logoutBtn" class="btn btn-outline-danger w-100">Sair</a></li>
+      </ul>
+    </nav>
+
+    <div class="flex-grow-1 p-4 bg-light">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-secondary">Gestão de Convênios</h3>
+        <span id="userDisplay" class="text-muted"></span>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h5 class="mb-3 text-secondary">Novo Convênio</h5>
+          <form id="convenioForm" class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label">Nome do Convênio</label>
+              <input type="text" id="nomeConvenio" class="form-control" required>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">CNPJ</label>
+              <input type="text" id="cnpjConvenio" class="form-control" placeholder="00.000.000/0000-00">
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label">Telefone de Contato</label>
+              <input type="text" id="telefoneConvenio" class="form-control" placeholder="(00) 00000-0000">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Observações</label>
+              <textarea id="observacoesConvenio" class="form-control" rows="2" placeholder="Ex: Requer guia de autorização..."></textarea>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Adicionar Convênio</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="mb-3 text-secondary">Convênios Salvos</h5>
+          <table class="table table-striped table-hover align-middle" id="tabelaConvenios">
+            <thead class="table-primary">
+              <tr>
+                <th>Nome</th>
+                <th>CNPJ</th>
+                <th>Telefone</th>
+                <th>Observações</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editConvenioModal" tabindex="-1" aria-labelledby="editConvenioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editConvenioModalLabel">Editar Convênio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <form id="editConvenioForm">
+          <div class="modal-body">
+            <input type="hidden" id="editConvenioIndex">
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nome do Convênio</label>
+                <input type="text" id="editNomeConvenio" class="form-control" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">CNPJ</label>
+                <input type="text" id="editCnpjConvenio" class="form-control">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Telefone de Contato</label>
+                <input type="text" id="editTelefoneConvenio" class="form-control">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Observações</label>
+                <textarea id="editObservacoesConvenio" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
